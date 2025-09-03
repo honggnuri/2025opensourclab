@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Video Landing • Click to Enter</title>
+    <meta name="description" content="A4 세로 비율 프레임 안에 배경 비디오가 재생되는 랜딩 페이지. 화면을 클릭하면 지정한 링크로 이동합니다." />
+    <meta property="og:title" content="Video Landing" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="poster.jpg" />
+    <meta property="og:url" content="https://example.com" />
+
+    <style>
+        /* ===== 기본 리셋 & 폰트 ===== */
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Pretendard, Noto Sans KR, Apple SD Gothic Neo, sans-serif;
+            background: #0b0b0c;
+        }
+
+        /* ===== 전체 링크 래퍼: 페이지 어디를 눌러도 이동 ===== */
+        a.page-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100svh;
+            /* 모바일 주소창 변동 대응 */
+            min-height: 100dvh;
+            /* 지원 브라우저에서 더 정확 */
+            text-decoration: none;
+            color: inherit;
+            -webkit-tap-highlight-color: transparent;
+            /* 모바일 하이라이트 제거 */
+            position: relative;
+            padding: calc(env(safe-area-inset-top) + 16px) 16px calc(env(safe-area-inset-bottom) + 20px) 16px;
+        }
+
+        /* ===== A4 세로 비율 프레임 ===== */
+        .paper {
+            position: relative;
+            height: min(92svh, 92dvh, 900px);
+            /* 모바일 우선: 높이 기준 */
+            aspect-ratio: 210 / 297;
+            /* A4 Portrait (≈0.707) */
+            max-width: 92vw;
+            /* 가로 초과 방지 */
+            border-radius: 16px;
+            overflow: hidden;
+            background: #111;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, .45), 0 8px 24px rgba(0, 0, 0, .35);
+            outline: 1px solid rgba(255, 255, 255, .08);
+        }
+
+        /* ===== 비디오 / 스크림 ===== */
+        .video-bg,
+        .scrim {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .video-bg {
+            object-fit: cover;
+            /* 프레임을 가득 채우되 일부 크롭 */
+            object-position: center;
+            filter: brightness(0.9);
+            /* 가독성 보정 */
+        }
+
+        .scrim {
+            background: linear-gradient(180deg, rgba(0, 0, 0, .40), rgba(0, 0, 0, .15) 40%, rgba(0, 0, 0, .55));
+            pointer-events: none;
+        }
+
+        /* ===== 콘텐츠: 프레임 정중앙 + 가운데 정렬 ===== */
+        .content {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-start;
+            text-align: center;
+            padding: 24px;
+        }
+
+        h1 {
+            margin: 0 0 10px;
+            color: #fff;
+            font-size: clamp(14px, 6vw, 64px);
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        p.sub {
+            margin: 0 0 18px;
+            color: rgba(255, 255, 255, .95);
+            font-size: clamp(12px, 1.8vw, 20px);
+            max-width: 60ch;
+        }
+
+        .cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 18px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, .14);
+            border: 0.5px solid rgba(255, 255, 255, .28);
+            backdrop-filter: blur(3px);
+            color: #fff;
+            font-weight: 700;
+            letter-spacing: .01em;
+        }
+
+        /* ===== 접근성: 움직임 최소화 선호 시 비디오 비표시 (포스터/배경만) ===== */
+        @media (prefers-reduced-motion: reduce) {
+            .video-bg {
+                display: none;
+            }
+
+            .paper {
+                background: center / cover no-repeat url('poster.jpg'), #000;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 페이지 어디든 클릭/탭 시 링크로 이동 -->
+    <a class="page-link"
+        href="https://docs.google.com/forms/d/e/1FAIpQLSdXHrsbIxk6LZPCq2W-lChJNUKRNEfZpn2ceM4HUsLOOslKyA/viewform"
+        aria-label="사이트로 이동" title="사이트로 이동">
+
+        <!-- A4 세로 프레임 -->
+        <div class="paper" role="img" aria-label="A4 비율 비디오 랜딩 프레임">
+            <video class="video-bg" autoplay loop muted playsinline preload="metadata" poster="poster.jpg">
+                <!-- webm을 추가로 제공하면 호환성/품질에 유리 -->
+                <!-- <source src="/source/Comp_2_1.webm" type="video/webm" /> -->
+                <source src="/source/Comp 2_1.mp4" type="video/mp4" />
+                브라우저가 HTML5 비디오를 지원하지 않습니다.
+            </video>
+
+            <div class="scrim" aria-hidden="true"></div>
+
+            <div class="content" role="presentation">
+                <div>
+                    <h1>Open Source Lab <br> Recruiting 2025</h1>
+                    <p class="sub">
+                        오픈소스랩은 2018년 홍익대학교 디지털미디어디자인 전공 학생과 디자인컨버전스학부 학생들이 만나
+                        예술과 디지털기술에 대해 공부하며 시작된 모임이다. 자유 소프트웨어 운동에서 비롯된 “오픈소스” 문화의
+                        특징인 정보공유 평등주의와 협업주의를 받아들여 계승하자는 의미로 ‘Open Source Lab’이라는 이름으로 정하였다.
+                        현재는 인터티브 미디어 디자인을 연구하며, 기술과 예술의 경계를 탐구하고 있습니다.
+                    </p>
+                    <div class="cta">지원하기</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 스크린 리더용 안내 -->
+        <span class="sr-only"
+            style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;">
+            전체 화면을 클릭하면 링크로 이동합니다.
+        </span>
+    </a>
+
+    <script>
+        // iOS/Safari 자동재생 안정화: muted/playsinline 보장 & 포커스 복귀 시 재생 시도
+        (function () {
+            const v = document.querySelector('.video-bg');
+            if (!v) return;
+
+            function tryAutoplay() {
+                v.muted = true;          // 모바일 자동재생 정책 대응
+                v.playsInline = true;    // 전체화면 전환 방지
+                const p = v.play();
+                if (p && typeof p.then === 'function') {
+                    p.catch(() => { /* 실패해도 조용히 무시 */ });
+                }
+            }
+
+            document.addEventListener('visibilitychange', () => {
+                if (!document.hidden && v.paused) tryAutoplay();
+            }, { passive: true });
+
+            // 첫 로드 시도
+            tryAutoplay();
+        })();
+    </script>
+
+    <noscript>
+        <style>
+            .video-bg {
+                display: none;
+            }
+
+            .scrim {
+                background: rgba(0, 0, 0, .55);
+            }
+
+            .paper {
+                background: center / cover no-repeat url('poster.jpg'), #000;
+            }
+        </style>
+    </noscript>
+</body>
+
+</html>
